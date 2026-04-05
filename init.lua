@@ -80,6 +80,20 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', {}) -- Espacio + e
     end
   },
+  {
+  "folke/which-key.nvim",
+  lazy = true,
+  event = "VeryLazy",
+  config = function()
+    require("which-key").setup({})
+  end,
+},
+{
+  "folke/tokyonight.nvim",
+  lazy = false,
+  priority = 1000,
+  opts = {},
+},
 })
 
 -- 4. Opciones de Interfaz y Calidad de Vida
@@ -97,11 +111,22 @@ vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = "Ir a Implementac
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Ver Documentación" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Renombrar" })
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "Acciones de Código" })
-vim.keymap.set('n', '<A-j>', ':copy .<CR>==', { desc = "Duplicar línea abajo" })
-vim.keymap.set('n', '<A-k>', ':copy .-1<CR>==', { desc = "Duplicar línea arriba" })
-vim.keymap.set('v', '<A-j>', ":copy '> <CR>gv=gv", { desc = "Duplicar bloque abajo" })
+-- Duplicar línea actual
+vim.keymap.set('n', '<leader>d', 'yyp', { desc = 'Duplicar línea abajo' })
+-- Duplicar selección
+vim.keymap.set('v', '<leader>d', 'y`>p', { desc = 'Duplicar bloque abajo' })
 -- Formatear código (como Ctrl+Alt+L en IntelliJ)
 vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = "Formatear archivo" })
+-- Intercambiar j y k (abajo / arriba)
+vim.keymap.set({ 'n', 'v', 'o' }, 'j', 'k', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v', 'o' }, 'k', 'j', { noremap = true, silent = true })
+
+-- Mover línea actual arriba / abajo
+vim.keymap.set('n', '<leader>j', ':m .-2<CR>==', { desc = 'Mover línea arriba' })
+vim.keymap.set('n', '<leader>k', ':m .+1<CR>==', { desc = 'Mover línea abajo' })
+
+vim.cmd[[colorscheme tokyonight]]
+
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.java",
   callback = function()
