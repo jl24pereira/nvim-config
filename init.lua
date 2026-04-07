@@ -261,7 +261,3 @@ vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
         inactive_winbar = {},
         extensions = {}
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 6974e922d806c1de77afea1858554851b1735383
