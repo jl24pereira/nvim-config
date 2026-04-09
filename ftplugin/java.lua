@@ -18,7 +18,7 @@ local workspace_dir = home .. "/AppData/Local/temp/jdtls-workspace/" .. project_
 -- 3. Configuración completa del servidor
 local config = {
   cmd = {
-    "java", -- Asegúrate que 'java -version' en terminal devuelva la 21
+    "java", 
     "-Declipse.application=org.eclipse.jdt.ls.core.id1",
     "-Dosgi.bundles.defaultStartLevel=4",
     "-Declipse.product=org.eclipse.jdt.ls.core.product",
@@ -58,5 +58,5 @@ local config = {
   },
 }
 
--- 4. Iniciar
+-- 4. Iniciar (🟢 ESTA ES LA LÍNEA QUE FALTABA)
 require('jdtls').start_or_attach(config)

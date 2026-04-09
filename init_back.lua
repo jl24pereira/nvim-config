@@ -70,28 +70,13 @@ require("lazy").setup({
 
     -- Telescope: El buscador "Shift-Shift"
     {
-        'nvim-telescope/telescope.nvim',
-        tag = '0.1.5',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope-ui-select.nvim',
-        },
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
+        dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
-            local telescope = require('telescope')
             local builtin = require('telescope.builtin')
-
-            telescope.setup({
-                extensions = {
-                    ["ui-select"] = {
-                        require("telescope.themes").get_dropdown({})
-                    }
-                }
-            })
-
-            telescope.load_extension("ui-select")
-
-            vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-            vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>ff', builtin.find_files, {}) -- Espacio + f + f
+            vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})  -- Espacio + f + g (Buscar texto)
+            -- BUSCAR MÉTODOS/CLASES (El verdadero Shift-Shift de IntelliJ)
             vim.keymap.set('n', '<leader>fs', builtin.lsp_dynamic_workspace_symbols, {})
         end
     },
@@ -157,8 +142,6 @@ vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = "Ir a Implementac
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "Ver Documentación" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Renombrar" })
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "Acciones de Código" })
-
-
 -- Duplicar línea actual
 vim.keymap.set('n', '<leader>d', 'yyp', { desc = 'Duplicar línea abajo' })
 -- Duplicar selección
@@ -208,9 +191,21 @@ vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
     vim.keymap.set('n', '<leader>j', ':m .-2<CR>==', { desc = 'Mover línea arriba' })
     vim.keymap.set('n', '<leader>k', ':m .+1<CR>==', { desc = 'Mover línea abajo' })
 
-    vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Ver diagnóstico LSP" })
-
     vim.cmd[[colorscheme tokyonight]]
+
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.java",
+        callback = function()
+            vim.lsp.buf.format({ async = false })
+        end,
+    })
+
+    -- Activar servidores para archivos Gradle y Groovy (Formato moderno Nvim 0.11+)
+    vim.lsp.config("groovyls", {})
+    vim.lsp.enable("groovyls")
+
+    vim.lsp.config("gradle_ls", {})
+    vim.lsp.enable("gradle_ls")
 
     require('lualine').setup {
         options = {
@@ -266,10 +261,3 @@ vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
         inactive_winbar = {},
         extensions = {}
     }
-
-    vim.diagnostic.config({
-        virtual_text = false,
-        float = { border = "rounded" },
-        signs = true,
-        underline = true,
-    })
