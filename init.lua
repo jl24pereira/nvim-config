@@ -31,6 +31,8 @@ vim.keymap.set('v', '<leader>d', 'y`>p', { desc = 'Duplicar bloque abajo' })
 
 -- Navegación de Buffers (Pestañas) y Comentarios
 vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = "Cerrar buffer actual" })
+vim.keymap.set('n', '<leader>bl', ':bn<CR>', { desc = "Mover a buffer siguiente" })
+vim.keymap.set('n', '<leader>bh', ':bp<CR>', { desc = "Mover a buffer anterior" })
 vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
 
 -- --- PLUGINS (Telescope y Neo-tree) ---
@@ -117,14 +119,14 @@ require("lazy").setup({
                     end,
                     
                     -- 🟢 RESTAURADA: La excepción para que Mason no rompa a Java
-                    ["jdtls"] = function() end, 
+                    -- ["jdtls"] = function() end, 
 
-                    ["gradle_ls"] = function() end,
+                    -- ["gradle_ls"] = function() end,
                 }
             })
         end
     },
-    { "neovim/nvim-lspconfig" },
+    -- { "neovim/nvim-lspconfig" },
     
     -- 🟢 RESTAURADO: El motor de Java especializado
     { "mfussenegger/nvim-jdtls" }, 
@@ -331,6 +333,7 @@ require("lazy").setup({
             })
         end
     },
+    {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
 })
 
 -- =====================================================================
@@ -343,3 +346,6 @@ vim.diagnostic.config({
     signs = true,
     underline = true,
 }) -- 🟢 PARÉNTESIS CORREGIDO AQUÍ
+
+vim.opt.termguicolors = true
+require("bufferline").setup{}

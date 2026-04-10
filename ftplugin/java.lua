@@ -59,4 +59,4 @@ local config = {
 }
 
 -- 4. Iniciar (🟢 ESTA ES LA LÍNEA QUE FALTABA)
-require('jdtls').start_or_attach(config)
+-- require('jdtls').start_or_attach(config)
