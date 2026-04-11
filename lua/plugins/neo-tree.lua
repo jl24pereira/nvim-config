@@ -13,6 +13,8 @@ return {
         end
 
         require("neo-tree").setup({
+            close_if_last_window = true,
+            popup_border_style = "rounded",
             filesystem = {
                 bind_to_cwd = true,
                 follow_current_file = {
@@ -21,14 +23,25 @@ return {
                 use_libuv_file_watcher = true
             },
             window = {
+                position = "left",
+                width = 40,
                 mappings = {
                     ["<space>"] = "none" -- Para que no interfiera con tu tecla Leader
                 }
             },
             source_selector = {
-                winbar = false,
-                statusline = false
-            }
+                winbar = true,
+                statusline = false,
+                content_layout = "center",
+                sources = {
+                    { source = "filesystem", display_name = " 󰉓 Files " },
+                    { source = "buffers", display_name = " 󰈙 Buffers " },
+                    { source = "git_status", display_name = " 󰊢 Git " },
+                }
+            },
+            enable_git_status = true,
+            enable_diagnostics = true,
+
         })
     end
 }
