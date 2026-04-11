@@ -16,7 +16,7 @@ vim.keymap.set('n', '<leader>d', 'yyp', { desc = 'Duplicar línea abajo' })
 vim.keymap.set('v', '<leader>d', 'y`>p', { desc = 'Duplicar bloque abajo' })
 
 -- Navegación de Buffers (Pestañas) y Comentarios
-vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = "Cerrar buffer actual" })
+vim.keymap.set('n', '<leader>x', ':Bdelete<CR>', { desc = "Cerrar buffer actual" })
 vim.keymap.set('n', '<leader>bl', ':bn<CR>', { desc = "Mover a buffer siguiente" })
 vim.keymap.set('n', '<leader>bh', ':bp<CR>', { desc = "Mover a buffer anterior" })
 vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
