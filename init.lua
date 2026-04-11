@@ -5,3 +5,4 @@ require("core.keymaps")
 
 -- Carga config de lazy.vim
 require("lazy-nvim")
+

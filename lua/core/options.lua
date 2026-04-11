@@ -22,4 +22,4 @@ vim.diagnostic.config({
 })
 
 vim.opt.termguicolors = true
-require("bufferline").setup {}
+
