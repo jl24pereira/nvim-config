@@ -22,7 +22,7 @@ vim.keymap.set('n', '<leader>bh', ':bp<CR>', { desc = "Mover a buffer anterior" 
 vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
 
 -- --- PLUGINS (Telescope y Neo-tree) ---
-vim.keymap.set('n', '<leader>nt', ':Neotree toggle<CR>', { desc = "Abrir explorador de archivos" })
+vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = "Abrir explorador de archivos" })
 -- Atajos para cambiar entre fuentes de Neo-tree
 vim.keymap.set("n", "<leader>nf", ":Neotree focus filesystem<CR>", { desc = "Neo-tree Files" })
 vim.keymap.set("n", "<leader>nb", ":Neotree focus buffers<CR>", { desc = "Neo-tree Buffers" })
