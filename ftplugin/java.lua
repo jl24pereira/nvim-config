@@ -1,59 +1,58 @@
-local home = os.getenv("USERPROFILE")
-local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
-local path_to_plugins = jdtls_path .. "/plugins/"
-local path_to_jar = vim.fn.glob(path_to_plugins .. "org.eclipse.equinox.launcher_*.jar")
-local path_to_config = jdtls_path .. "/config_win"
+-- Archivo: ftplugin/java.lua
+-- Versión blindada para Windows y manejo de errores
 
--- 1. Detección de la raíz del proyecto
-local root_markers = { ".git", "mvnw", "gradlew", "build.gradle", "pom.xml" }
-local root_dir = require('jdtls.setup').find_root(root_markers)
-if root_dir == "" then
-    root_dir = vim.fn.getcwd()
+local status, jdtls = pcall(require, "jdtls")
+if not status then
+    vim.notify("ERROR: El plugin nvim-jdtls no está instalado o cargado", vim.log.levels.ERROR)
+    return
 end
 
--- 2. Carpeta de datos del Workspace (Caché)
-local project_name = vim.fn.fnamemodify(root_dir, ":p:h:t")
-local workspace_dir = home .. "/AppData/Local/temp/jdtls-workspace/" .. project_name
+-- 1. Ruta absoluta al ejecutable de Mason (A prueba de fallos de PATH en Windows)
+local jdtls_path = vim.fn.stdpath("data") .. "/mason/bin/jdtls.cmd"
 
--- 3. Configuración completa del servidor
+-- 2. Cálculo del workspace único
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+local workspace_dir = vim.fn.stdpath('data') .. '/site/java/workspace-root/' .. project_name
+
+-- 3. Detección segura de la raíz del proyecto (Evita crashes si no detecta .git o gradle)
+local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew', 'build.gradle'})
+if root_dir == "" or root_dir == nil then
+    root_dir = vim.fn.getcwd() -- Si falla, usa la carpeta actual como rescate
+end
+
+-- 4. Configuración Maestra
 local config = {
-  cmd = {
-    "java", 
-    "-Declipse.application=org.eclipse.jdt.ls.core.id1",
-    "-Dosgi.bundles.defaultStartLevel=4",
-    "-Declipse.product=org.eclipse.jdt.ls.core.product",
-    "-Dlog.level=ALL",
-    "-Xms1g",
-    "--add-modules=ALL-SYSTEM",
-    "--add-opens", "java.base/java.util=ALL-UNNAMED",
-    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-
-    "-jar", path_to_jar,
-    "-configuration", path_to_config,
-    "-data", workspace_dir,
-  },
-
-  root_dir = root_dir,
-
-  settings = {
-    java = {
-      configuration = {
-        runtimes = {
-          {
-            name = "JavaSE-21",
-            path = "C:/Program Files/Java/jdk-21", -- Ruta al JDK 21
-            default = true,
-          },
-        },
-      },
-      signatureHelp = { enabled = true },
-      contentProvider = { preferred = 'fernflower' },
-      sources = {
-        organizeImports = {
-          starThreshold = 9999,
-          staticStarThreshold = 9999,
-        },
-      },
+    cmd = { jdtls_path },
+    root_dir = root_dir,
+    
+    settings = {
+        java = {
+            signatureHelp = { enabled = true },
+            configuration = {
+                runtimes = {
+                    {
+                        name = "JavaSE-21",
+                        path = "C:/Program Files/Java/jdk-21",
+                        default = true,
+                    }
+                }
+            }
+        }
     },
-  },
+    
+    capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    
+    init_options = {
+        workspace = workspace_dir
+    }
 }
+
+-- 5. Arranque con escudo de errores (pcall)
+local success, err = pcall(function()
+    jdtls.start_or_attach(config)
+end)
+
+-- Si el servidor se estrella, nos mostrará el mensaje exacto en rojo en lugar de ocultarlo
+if not success then
+    vim.notify("FATAL JDTLS ERROR: " .. tostring(err), vim.log.levels.ERROR)
+end
