@@ -37,88 +37,52 @@ return {
                 },
                 indent = {
                     indent_size = 2,
-                    padding = 1, -- extra padding on left hand side
-                    -- indent guides
+                    padding = 1, 
                     with_markers = true,
-                    indent_marker = "│",
-                    last_indent_marker = "└",
+                    indent_marker = "│",     -- Línea vertical suave
+                    last_indent_marker = "└",  -- Esquina redondeada
                     highlight = "NeoTreeIndentMarker",
-                    -- expander config, needed for nesting files
-                    with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-                    expander_collapsed = "",
-                    expander_expanded = "",
-                    expander_highlight = "NeoTreeExpander"
+                    with_expanders = true,   -- ¡Esto es clave para las flechitas!
+                    expander_collapsed = "", -- Flecha derecha
+                    expander_expanded = "",  -- Flecha abajo
+                    expander_highlight = "NeoTreeExpander",
                 },
                 icon = {
                     folder_closed = "",
                     folder_open = "",
                     folder_empty = "󰜌",
-                    provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
-                        if node.type == "file" or node.type == "terminal" then
-                            local success, web_devicons = pcall(require, "nvim-web-devicons")
-                            local name = node.type == "terminal" and "terminal" or node.name
-                            if success then
-                                local devicon, hl = web_devicons.get_icon(name)
-                                icon.text = devicon or icon.text
-                                icon.highlight = hl or icon.highlight
-                            end
-                        end
-                    end,
-                    -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-                    -- then these will never be used.
+                    -- Eliminamos la lógica manual de devicons, Neo-tree lo hace automáticamente ahora
                     default = "*",
                     highlight = "NeoTreeFileIcon",
-                    use_filtered_colors = true -- Whether to use a different highlight when the file is filtered (hidden, dotfile, etc.).
+                    use_filtered_colors = true 
                 },
                 modified = {
-                    symbol = "[+]",
+                    symbol = "●", -- Círculo elegante en lugar de "[+]"
                     highlight = "NeoTreeModified"
                 },
                 name = {
                     trailing_slash = false,
-                    use_filtered_colors = true, -- Whether to use a different highlight when the file is filtered (hidden, dotfile, etc.).
+                    use_filtered_colors = true, 
                     use_git_status_colors = true,
                     highlight = "NeoTreeFileName"
                 },
                 git_status = {
                     symbols = {
-                        -- Change type
-                        added = "", -- or "✚"
-                        modified = "", -- or ""
-                        deleted = "✖", -- this can only be used in the git_status source
-                        renamed = "󰁕", -- this can only be used in the git_status source
-                        -- Status type
+                        added     = "✚",
+                        modified  = "",
+                        deleted   = "✖",
+                        renamed   = "󰁕",
                         untracked = "",
-                        ignored = "",
-                        unstaged = "󰄱",
-                        staged = "",
-                        conflict = ""
+                        ignored   = "",
+                        unstaged  = "󰄱",
+                        staged    = "",
+                        conflict  = "",
                     }
                 },
-                -- If you don't want to use these columns, you can set `enabled = false` for each of them individually
-                file_size = {
-                    enabled = true,
-                    width = 12, -- width of the column
-                    required_width = 64 -- min width of window required to show this column
-                },
-                type = {
-                    enabled = true,
-                    width = 10, -- width of the column
-                    required_width = 122 -- min width of window required to show this column
-                },
-                last_modified = {
-                    enabled = true,
-                    width = 20, -- width of the column
-                    required_width = 88 -- min width of window required to show this column
-                },
-                created = {
-                    enabled = true,
-                    width = 20, -- width of the column
-                    required_width = 110 -- min width of window required to show this column
-                },
-                symlink_target = {
-                    enabled = false
-                }
+                file_size = { enabled = false }, -- Ocultamos estas columnas para un look más limpio
+                type = { enabled = false },
+                last_modified = { enabled = false },
+                created = { enabled = false },
             },
             -- A list of functions, each representing a global custom command
             -- that will be available in all sources (if not overridden in `opts[source_name].commands`)

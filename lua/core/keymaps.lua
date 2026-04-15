@@ -19,14 +19,14 @@ vim.keymap.set('v', '<leader>d', 'y`>p', { desc = 'Duplicar bloque abajo' })
 vim.keymap.set('n', '<leader>x', ':Bdelete<CR>', { desc = "Cerrar buffer actual" })
 vim.keymap.set('n', '<leader>bl', ':bn<CR>', { desc = "Mover a buffer siguiente" })
 vim.keymap.set('n', '<leader>bh', ':bp<CR>', { desc = "Mover a buffer anterior" })
-vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
+-- vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = "Comentar línea" })
 
 -- --- PLUGINS (Telescope y Neo-tree) ---
 vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = "Abrir explorador de archivos" })
 -- Atajos para cambiar entre fuentes de Neo-tree
-vim.keymap.set("n", "<leader>nf", ":Neotree focus filesystem<CR>", { desc = "Neo-tree Files" })
-vim.keymap.set("n", "<leader>nb", ":Neotree focus buffers<CR>", { desc = "Neo-tree Buffers" })
-vim.keymap.set("n", "<leader>ng", ":Neotree focus git_status<CR>", { desc = "Neo-tree Git" })
+-- vim.keymap.set("n", "<leader>nf", ":Neotree focus filesystem<CR>", { desc = "Neo-tree Files" })
+-- vim.keymap.set("n", "<leader>nb", ":Neotree focus buffers<CR>", { desc = "Neo-tree Buffers" })
+-- vim.keymap.set("n", "<leader>ng", ":Neotree focus git_status<CR>", { desc = "Neo-tree Git" })
 
 vim.keymap.set('n', '<leader>ff', function() require('telescope.builtin').find_files() end, { desc = "Buscar archivos" })
 vim.keymap.set('n', '<leader>fg', function() require('telescope.builtin').live_grep() end, { desc = "Buscar texto en proyecto" })
