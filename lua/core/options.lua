@@ -11,6 +11,7 @@ vim.opt.shiftwidth = 4 -- Tamaño de la indentación
 vim.opt.tabstop = 4 -- Tamaño del tabulador visual
 vim.opt.expandtab = true -- Convierte tabs en espacios
 vim.opt.clipboard = "unnamedplus" -- Usa el portapapeles del sistema (Windows/Mac/Linux)
+vim.opt.shell = "powershell"
 
 vim.diagnostic.config({
     virtual_text = false,
