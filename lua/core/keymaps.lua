@@ -39,8 +39,8 @@ keymap.set('v', '<leader>dd', 'y`>p', { desc = 'Duplicar bloque abajo' })
 -- NAVEGACIÓN DE BUFFERS Y TABS
 -- ---------------------------------------------------------------------
 keymap.set('n', '<leader>x', ':Bdelete<CR>', { desc = "Cerrar buffer actual" })
-keymap.set('n', '<leader>b<', ':bn<CR>', { desc = "Siguiente buffer" })
-keymap.set('n', '<leader>b>', ':bp<CR>', { desc = "Buffer anterior" })
+keymap.set('n', '<leader>b>', ':bn<CR>', { desc = "Siguiente buffer" })
+keymap.set('n', '<leader>b<', ':bp<CR>', { desc = "Buffer anterior" })
 
 keymap.set("n", "<leader>to", ":tabnew<CR>", { desc = "Nueva pestaña" })
 keymap.set("n", "<leader>tx", ":tabclose<CR>", { desc = "Cerrar pestaña" })
@@ -172,37 +172,3 @@ keymap.set("n", '<leader>d?', function() local widgets = require "dap.ui.widgets
 keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Debug: Frames" })
 keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Debug: Comandos DAP" })
 keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({default_text = ":E:"}) end, { desc = "Debug: Buscar Errores" })
-
--- ---------------------------------------------------------------------
--- EJECUCIÓN (RUN)
--- ---------------------------------------------------------------------
--- =====================================================================
--- EJECUCIÓN (RUN) - Solución nativa para Windows
--- =====================================================================
-
--- 1. Ejecutar Spring Boot (Módulo container-service)
-keymap.set('n', '<leader>rc', function()
-    vim.cmd('split | term')
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, "./gradlew bootRun\r")
-end, { desc = "Run: Spring Boot (Container)" })
-
--- 2. Ejecutar Proyecto Java con Gradle
-keymap.set('n', '<leader>rj', function()
-    vim.cmd('split | term')
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, "./gradlew run\r")
-end, { desc = "Run: Proyecto Java (Gradle)" })
-
--- 3. Ejecutar Archivo Suelto
-keymap.set('n', '<leader>rs', function()
-    -- Capturamos la ruta absoluta del archivo ANTES de abrir la terminal
-    local filepath = vim.fn.expand('%:p') 
-    
-    if filepath == "" or filepath == nil then
-        print("No hay un archivo válido para ejecutar")
-        return
-    end
-
-    vim.cmd('split | term')
-    -- Mandamos el comando java asegurando la ruta entre comillas
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, 'java "' .. filepath .. '"\r')
-end, { desc = "Run: Archivo Suelto" })

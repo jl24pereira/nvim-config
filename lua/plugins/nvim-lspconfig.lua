@@ -7,27 +7,35 @@ return {
     dependencies = {
         -- LSP Management
         -- https://github.com/williamboman/mason.nvim
-        {'williamboman/mason.nvim'},
+        { 'williamboman/mason.nvim' },
         -- https://github.com/williamboman/mason-lspconfig.nvim
-        {'williamboman/mason-lspconfig.nvim'},
+        { 'williamboman/mason-lspconfig.nvim' },
 
         -- Auto-Install LSPs, linters, formatters, debuggers
         -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
-        {'WhoIsSethDaniel/mason-tool-installer.nvim'},
+        { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 
         -- Useful status updates for LSP
         -- https://github.com/j-hui/fidget.nvim
-        {'j-hui/fidget.nvim', opts = {}},
+        { 'j-hui/fidget.nvim',                        opts = {} },
 
         -- Additional lua configuration, makes nvim stuff amazing!
         -- https://github.com/folke/neodev.nvim
-        {'folke/neodev.nvim', opts = {}}
+        { 'folke/neodev.nvim',                        opts = {} }
     },
     config = function()
         local lspconfig = require('lspconfig')
         local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
         local lsp_attach = function(client, bufnr)
             -- Create your keybindings here...
+            local status_ok, navic = pcall(require, "nvim-navic")
+            if status_ok then
+                -- Solo adjuntar navic si el servidor soporta símbolos de documento
+                -- Y evitamos que se adjunte a gradle_ls si groovyls ya está ahí
+                if client.server_capabilities.documentSymbolProvider then
+                    navic.attach(client, bufnr)
+                end
+            end
         end
 
         require('mason').setup()
@@ -53,7 +61,7 @@ return {
 
         require('mason-tool-installer').setup({
             -- Install these linters, formatters, debuggers automatically
-            ensure_installed = {'java-debug-adapter', 'java-test'}
+            ensure_installed = { 'java-debug-adapter', 'java-test' }
         })
 
         -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
@@ -66,7 +74,7 @@ return {
                 ['lua_ls'] = {
                     diagnostics = {
                         -- Get the language server to recognize the `vim` global
-                        globals = {'vim'}
+                        globals = { 'vim' }
                     }
                 }
             }
@@ -79,6 +87,5 @@ return {
             opts.border = opts.border or "rounded" -- Set border to rounded
             return open_floating_preview(contents, syntax, opts, ...)
         end
-
     end
 }
