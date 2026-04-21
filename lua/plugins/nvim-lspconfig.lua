@@ -132,6 +132,7 @@ return {
                 'java-debug-adapter',
                 'java-test',
                 'google-java-format',
+                'vscode-spring-boot-tools',
                 -- LSPs
                 'bashls',
                 'cssls',
