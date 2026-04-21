@@ -1,6 +1,10 @@
 -- =====================================================================
 -- GESTOR DE PLUGINS (Bootstrapping lazy.nvim)
 -- =====================================================================
+--
+-- DEBE estar antes de lazy.nvim
+vim.lsp.config('jdtls', { enabled = false })
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -14,6 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", {
     change_detection = {
         enabled = true, -- automatically check for config file changes and reload the ui
-        notify = false -- turn off notifications whenever plugin changes are made
+        notify = false  -- turn off notifications whenever plugin changes are made
     }
 })

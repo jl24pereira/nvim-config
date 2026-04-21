@@ -40,30 +40,119 @@ return {
 
         require('mason').setup()
         require('mason-lspconfig').setup({
-            -- Install these LSPs automatically
             ensure_installed = {
                 'bashls', 'cssls', 'html', 'gradle_ls', 'groovyls', 'lua_ls',
-                'jdtls', 'jsonls', 'lemminx', 'marksman', 'quick_lint_js',
-                'yamlls'
+                'jsonls', 'lemminx', 'marksman', 'quick_lint_js',
+                'yamlls', 'dockerls'
+            },
+            automatic_instalation = {
+                exclude = { "jdtls" }
             },
             handlers = {
+                -- Default handler for all servers not listed below
                 function(server_name)
-                    -- Don't call setup for JDTLS Java LSP because it will be setup from a separate config
-                    if server_name ~= 'jdtls' then
-                        lspconfig[server_name].setup({
-                            on_attach = lsp_attach,
-                            capabilities = lsp_capabilities
-                        })
-                    end
-                end
+                    lspconfig[server_name].setup({
+                        on_attach = lsp_attach,
+                        capabilities = lsp_capabilities
+                    })
+                end,
+                -- jdtls is handled exclusively by ftplugin/java.lua
+                -- ['jdtls'] = function() end,
+                ['yamlls'] = function()
+                    lspconfig['yamlls'].setup({
+                        capabilities = {
+                            textDocument = {
+                                foldingRange = {
+                                    dynamicRegistration = false,
+                                    lineFoldingOnly = true,
+                                },
+                            },
+                        },
+                        before_init = function(_, new_config)
+                            new_config.settings.yaml.schemas = vim.tbl_deep_extend(
+                                "force",
+                                new_config.settings.yaml.schemas or {},
+                                require("schemastore").yaml.schemas()
+                            )
+                        end,
+                        settings = {
+                            redhat = { telemetry = { enabled = false } },
+                            yaml = {
+                                keyOrdering = false,
+                                format = { enable = true },
+                                validate = true,
+                                schemaStore = {
+                                    enable = false,
+                                    url = "",
+                                },
+                            },
+                        },
+                    })
+                end,
+                ['jsonls'] = function()
+                    lspconfig['jsonls'].setup({
+                        before_init = function(_, new_config)
+                            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+                            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+                        end,
+                        settings = {
+                            json = {
+                                format = { enable = true },
+                                validate = { enable = true },
+                            },
+                        },
+                    })
+                end,
+                ['marksman'] = function()
+                    lspconfig['marksman'].setup({})
+                end,
+                ['dockerls'] = function()
+                    lspconfig['dockerls'].setup({
+                        on_attach = lsp_attach,
+                        capabilities = lsp_capabilities,
+                        settings = {
+                            docker = {
+                                languageserver = {
+                                    formatter = {
+                                        ignoreMultilineInstructions = true,
+                                    },
+                                },
+                            }
+                        }
+                    })
+                end,
             }
         })
 
         require('mason-tool-installer').setup({
-            -- Install these linters, formatters, debuggers automatically
-            ensure_installed = { 'java-debug-adapter', 'java-test' }
-        })
 
+            ensure_installed = {
+                -- Java
+                'jdtls',
+                'java-debug-adapter',
+                'java-test',
+                'google-java-format',
+                -- LSPs
+                'bashls',
+                'cssls',
+                'html',
+                'gradle_ls',
+                'groovyls',
+                'lua_ls',
+                'jsonls',
+                'lemminx',
+                'marksman',
+                'quick_lint_js',
+                'yamlls',
+                -- Extras
+                'hadolint',
+                'markdownlint-cli2',
+                'markdown-toc',
+                'npm-groovy-lint',
+                'docker-language-server',
+            }
+
+        })
         -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
         -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
         vim.api.nvim_command('MasonToolsInstall')

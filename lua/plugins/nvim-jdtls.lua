@@ -1,5 +1,6 @@
+-- nvim-jdtls: solo declara el plugin como dependencia.
+-- Todo el arranque de jdtls ocurre EXCLUSIVAMENTE en ftplugin/java.lua
 return {
     "mfussenegger/nvim-jdtls",
-    -- La regla oficial: Solo se carga cuando el archivo es de tipo java
-    ft = "java"
+    ft = "java", -- lazy.nvim lo carga al abrir un .java, luego ftplugin/java.lua toma el control
 }

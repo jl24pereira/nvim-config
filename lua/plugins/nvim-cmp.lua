@@ -5,7 +5,7 @@ return {
         "neovim/nvim-lspconfig", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline", "hrsh7th/nvim-cmp",
         "onsails/lspkind.nvim", "saadparwaiz1/cmp_luasnip",
-        {"L3MON4D3/LuaSnip", version = "v2.*"}, "rafamadriz/friendly-snippets"
+        { "L3MON4D3/LuaSnip", version = "v2.*" }, "rafamadriz/friendly-snippets"
     },
     config = function()
         local cmp = require("cmp")
@@ -13,7 +13,7 @@ return {
         local lspkind = require('lspkind')
 
         require("luasnip.loaders.from_lua").lazy_load({
-            paths = {"~/AppData/Local/nvim/lua/plugins/snippets/"}
+            paths = { "~/.config/nvim/lua/plugins/snippets/" }
         })
 
         require("luasnip.loaders.from_vscode").lazy_load()
@@ -25,7 +25,7 @@ return {
                     -- vim.snippet.expand(args.body)
                 end
             },
-            completion = {completeopt = 'menu,menuone,noinsert'},
+            completion = { completeopt = 'menu,menuone,noinsert' },
             window = {
                 completion = {
                     border = "rounded", -- Fuerza el estilo de borde (rounded, single, double, solid)
@@ -40,9 +40,9 @@ return {
             mapping = cmp.mapping.preset.insert {
                 ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
                 ['<C-k>'] = cmp.mapping.select_prev_item(), -- previous suggestion
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4), -- scroll backward
-                ['<C-f>'] = cmp.mapping.scroll_docs(4), -- scroll forward
-                ['<C-Space>'] = cmp.mapping.complete {}, -- show completion suggestions
+                ['<C-b>'] = cmp.mapping.scroll_docs(-4),    -- scroll backward
+                ['<C-f>'] = cmp.mapping.scroll_docs(4),     -- scroll forward
+                ['<C-Space>'] = cmp.mapping.complete {},    -- show completion suggestions
                 ['<CR>'] = cmp.mapping.confirm {
                     behavior = cmp.ConfirmBehavior.Replace,
                     select = true
@@ -56,7 +56,7 @@ return {
                     else
                         fallback()
                     end
-                end, {'i', 's'}),
+                end, { 'i', 's' }),
                 -- Tab backwards through suggestions or when a snippet is active, tab to the next argument
                 ['<S-Tab>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -66,14 +66,14 @@ return {
                     else
                         fallback()
                     end
-                end, {'i', 's'})
+                end, { 'i', 's' })
             },
             -- Agrupamos sources para que aparezcan simultáneamente
             sources = cmp.config.sources({
-                {name = "nvim_lsp"}, -- lsp 
-                {name = "luasnip"}, -- snippets
-                {name = "buffer"}, -- text within current buffer
-                {name = "path"} -- file system paths
+                { name = "nvim_lsp" }, -- lsp
+                { name = "luasnip" }, -- snippets
+                { name = "buffer" }, -- text within current buffer
+                { name = "path" }    -- file system paths
             }),
             formatting = {
                 format = lspkind.cmp_format({
@@ -91,9 +91,9 @@ return {
             }
         })
 
-        cmp.setup.cmdline({'/', '?'}, {
+        cmp.setup.cmdline({ '/', '?' }, {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = {{name = 'buffer'}}
+            sources = { { name = 'buffer' } }
         })
     end
 }
