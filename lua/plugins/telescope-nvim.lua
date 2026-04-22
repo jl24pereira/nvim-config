@@ -14,7 +14,15 @@ return {
         -- Configuración del Gestor de Proyectos
         require("project_nvim").setup({
             detection_methods = { "lsp", "pattern" },
-            patterns = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" },
+            patterns = {
+                "settings.gradle",
+                "settings.gradle.kts",
+                ".git",
+                "mvnw",
+                "gradlew",
+                "pom.xml",
+                -- "build.gradle"
+            },
         })
 
         telescope.setup({
@@ -22,7 +30,7 @@ return {
                 ["ui-select"] = { require("telescope.themes").get_dropdown({}) },
                 ["file_browser"] = {
                     -- theme = "ivy",
-                    hijack_netrw = true,     -- Reemplaza el explorador nativo
+                    hijack_netrw = true, -- Reemplaza el explorador nativo
                     mappings = {
                         ["i"] = {
                             ["<A-s>"] = fb_actions.change_cwd,
@@ -51,4 +59,3 @@ return {
         pcall(telescope.load_extension, "dap")
     end
 }
-
