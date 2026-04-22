@@ -38,10 +38,10 @@ keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle explorador"
 -- EDICIÓN RÁPIDA (sin prefijo leader, estilo Vim)
 -- =====================================================================
 -- Mover líneas arriba/abajo en modo normal y visual
-keymap.set("n", "<A-J>", ":m .+1<CR>==", { desc = "Mover línea abajo" })
-keymap.set("n", "<A-K>", ":m .-2<CR>==", { desc = "Mover línea arriba" })
-keymap.set("v", "<A-J>", ":m '>+1<CR>gv=gv", { desc = "Mover bloque abajo" })
-keymap.set("v", "<A-K>", ":m '<-2<CR>gv=gv", { desc = "Mover bloque arriba" })
+keymap.set("n", "<leader>mj", ":m .+1<CR>==", { desc = "Mover línea abajo" })
+keymap.set("n", "<leader>mk", ":m .-2<CR>==", { desc = "Mover línea arriba" })
+keymap.set("v", "<leader>mj", ":m '>+1<CR>gv=gv", { desc = "Mover bloque abajo" })
+keymap.set("v", "<leader>mk", ":m '<-2<CR>gv=gv", { desc = "Mover bloque arriba" })
 
 -- Duplicar línea/bloque (movido a Alt para liberar <leader>j y <leader>k)
 keymap.set("n", "<A-d>", "yyp", { desc = "Duplicar línea abajo" })
