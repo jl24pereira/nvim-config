@@ -5,21 +5,27 @@
 local home = os.getenv("HOME")
 local jdtls = require("jdtls")
 
--- Busca la raíz real del proyecto multi-módulo Gradle
--- Sube hasta encontrar settings.gradle (raíz del proyecto completo)
--- y no se detiene en build.gradle de un submódulo
+-- ─────────────────────────────────────────────────────────────────────
+-- BÚSQUEDA DE ROOT_DIR PARA PROYECTOS GRADLE MULTI-MÓDULO
+--
+-- Problema: find_root() se detiene en el primer build.gradle que
+-- encuentra, que puede ser el de un submódulo en lugar de la raíz.
+--
+-- Solución: buscar primero settings.gradle (siempre está en la raíz
+-- del proyecto multi-módulo) y solo como fallback usar gradlew/.git
+-- ─────────────────────────────────────────────────────────────────────
 local function find_gradle_root()
-    -- Primero intenta encontrar settings.gradle (raíz multi-módulo)
+    -- 1. Prioridad máxima: settings.gradle en la raíz del multi-módulo
     local root = require("jdtls.setup").find_root({
         "settings.gradle",
         "settings.gradle.kts",
     })
 
-    -- Si no hay settings.gradle, busca indicadores alternativos de raíz
+    -- 2. Fallback: gradlew o .git (nunca build.gradle para evitar submódulos)
     if not root then
         root = require("jdtls.setup").find_root({
+            "gradlew",
             "mvnw",
-            "gradlew", -- gradlew en raíz es buen indicador
             ".git",
         })
     end
@@ -28,10 +34,12 @@ local function find_gradle_root()
 end
 
 local root_dir = find_gradle_root()
+
 -- Si no hay proyecto válido, no iniciar nada
 if not root_dir then return end
 
--- Guard: si ya hay un cliente jdtls activo para este root_dir, solo hacer attach y salir
+-- Guard: si ya hay un cliente jdtls activo para este root_dir,
+-- adjuntarlo al buffer actual y salir
 for _, client in pairs(vim.lsp.get_clients()) do
     if client.name == "jdtls" and client.config.root_dir == root_dir then
         vim.lsp.buf_attach_client(0, client.id)
@@ -68,10 +76,7 @@ vim.list_extend(bundles, vim.split(
 ))
 
 -- 3. Spring Boot Tools
---    Ruta real: ~/.local/share/nvim/mason/packages/vscode-spring-boot-tools/extension/language-server/lib/
 local spring_ls_lib = home .. "/.local/share/nvim/mason/packages/vscode-spring-boot-tools/extension/language-server/lib"
-
--- Solo añadir si el paquete está instalado
 local spring_jars = vim.fn.glob(spring_ls_lib .. "/*.jar", 1)
 if spring_jars ~= "" then
     vim.list_extend(bundles, vim.split(spring_jars, "\n"))
