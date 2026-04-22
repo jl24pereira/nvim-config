@@ -1,7 +1,7 @@
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
-    dependencies = {"nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim"},
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
     config = function()
         local manager = require("neo-tree.sources.manager")
         local old_get_state = manager.get_state
@@ -14,16 +14,17 @@ return {
 
         require("neo-tree").setup({
             close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
-            popup_border_style = "NC", -- or "" to use 'winborder' on Neovim v0.11+
+            popup_border_style = "NC",    -- or "" to use 'winborder' on Neovim v0.11+
             clipboard = {
-                sync = "none" -- or "global"/"universal" to share a clipboard for each/all Neovim instance(s), respectively
+                sync =
+                "none"                    -- or "global"/"universal" to share a clipboard for each/all Neovim instance(s), respectively
             },
             enable_git_status = true,
             enable_diagnostics = true,
-            open_files_do_not_replace_types = {"terminal", "trouble", "qf"}, -- when opening files, do not use windows containing these filetypes or buftypes
+            open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
             open_files_using_relative_paths = false,
-            sort_case_insensitive = false, -- used when sorting files and directories in the tree
-            sort_function = nil, -- use a custom function for sorting files and directories in the tree
+            sort_case_insensitive = false,                                   -- used when sorting files and directories in the tree
+            sort_function = nil,                                             -- use a custom function for sorting files and directories in the tree
             -- sort_function = function (a,b)
             --       if a.type == b.type then
             --           return a.path > b.path
@@ -37,14 +38,14 @@ return {
                 },
                 indent = {
                     indent_size = 2,
-                    padding = 1, 
+                    padding = 1,
                     with_markers = true,
-                    indent_marker = "│",     -- Línea vertical suave
-                    last_indent_marker = "└",  -- Esquina redondeada
+                    indent_marker = "│", -- Línea vertical suave
+                    last_indent_marker = "└", -- Esquina redondeada
                     highlight = "NeoTreeIndentMarker",
-                    with_expanders = true,   -- ¡Esto es clave para las flechitas!
+                    with_expanders = true, -- ¡Esto es clave para las flechitas!
                     expander_collapsed = "", -- Flecha derecha
-                    expander_expanded = "",  -- Flecha abajo
+                    expander_expanded = "", -- Flecha abajo
                     expander_highlight = "NeoTreeExpander",
                 },
                 icon = {
@@ -54,7 +55,7 @@ return {
                     -- Eliminamos la lógica manual de devicons, Neo-tree lo hace automáticamente ahora
                     default = "*",
                     highlight = "NeoTreeFileIcon",
-                    use_filtered_colors = true 
+                    use_filtered_colors = true
                 },
                 modified = {
                     symbol = "●", -- Círculo elegante en lugar de "[+]"
@@ -62,7 +63,7 @@ return {
                 },
                 name = {
                     trailing_slash = false,
-                    use_filtered_colors = true, 
+                    use_filtered_colors = true,
                     use_git_status_colors = true,
                     highlight = "NeoTreeFileName"
                 },
@@ -175,12 +176,13 @@ return {
                     hide_ignored = true, -- hide files that are ignored by other gitignore-like files
                     -- other gitignore-like files, in descending order of precedence.
                     ignore_files = {
-                        ".neotreeignore", 
-                        -- ".ignore" 
+                        ".neotreeignore",
+                        -- ".ignore"
                         -- ".rgignore"
                     },
                     hide_hidden = true, -- only works on Windows for hidden files/directories
                     hide_by_name = {
+                        "bin",
                         -- "node_modules"
                     },
                     hide_by_pattern = { -- uses glob style patterns
@@ -203,11 +205,11 @@ return {
                     }
                 },
                 follow_current_file = {
-                    enabled = false, -- This will find and focus the file in the active buffer every time
+                    enabled = false,                    -- This will find and focus the file in the active buffer every time
                     --               -- the current file is changed while the tree is open.
-                    leave_dirs_open = false -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+                    leave_dirs_open = false             -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
                 },
-                group_empty_dirs = false, -- when true, empty folders will be grouped together
+                group_empty_dirs = false,               -- when true, empty folders will be grouped together
                 hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
                 -- in whatever position is specified in window.position
                 -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -297,11 +299,11 @@ return {
             },
             buffers = {
                 follow_current_file = {
-                    enabled = true, -- This will find and focus the file in the active buffer every time
+                    enabled = true,         -- This will find and focus the file in the active buffer every time
                     --              -- the current file is changed while the tree is open.
                     leave_dirs_open = false -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
                 },
-                group_empty_dirs = true, -- when true, empty folders will be grouped together
+                group_empty_dirs = true,    -- when true, empty folders will be grouped together
                 show_unloaded = true,
                 window = {
                     mappings = {
