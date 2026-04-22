@@ -26,6 +26,31 @@ return {
         })
 
         telescope.setup({
+            defaults = {
+                file_ignore_patterns = {
+                    -- Compilados Java
+                    "%.class",
+                    "bin/",
+                    "build/",
+                    -- Control de versiones
+                    "%.git/",
+                    -- Gradle cache
+                    "%.gradle/",
+                    ".gradle/",
+                },
+                vimgrep_arguments = {
+                    "rg",
+                    "--color=never",
+                    "--no-heading",
+                    "--with-filename",
+                    "--line-number",
+                    "--column",
+                    "--smart-case",
+                    "--glob=!**/*.class", -- excluir .class del grep
+                    "--glob=!**/bin/**",  -- excluir carpeta bin
+                    "--glob=!**/build/**",
+                },
+            },
             extensions = {
                 ["ui-select"] = { require("telescope.themes").get_dropdown({}) },
                 ["file_browser"] = {
