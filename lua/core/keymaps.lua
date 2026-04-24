@@ -27,6 +27,7 @@ local keymap = vim.keymap
 keymap.set("n", "<leader>ww", ":w<CR>", { desc = "Guardar" })
 keymap.set("n", "<leader>wq", ":wq<CR>", { desc = "Guardar y salir" })
 keymap.set("n", "<leader>qq", ":q!<CR>", { desc = "Salir sin guardar" })
+keymap.set("n", "<leader>qa", ":qa<CR>", { desc = "Cerrar todo Neovim" })
 
 -- =====================================================================
 -- EXPLORADOR DE ARCHIVOS

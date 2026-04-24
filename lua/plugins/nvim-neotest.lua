@@ -15,7 +15,8 @@ return {
                 require("neotest-java")({
                     -- Detecta automáticamente si es Maven o Gradle
                     -- Si tienes un proyecto mixto, fuerza uno:
-                    -- build_tool = "gradle",
+                    build_tool = "gradle",
+                    gradle_wrapper = "gradlew",
                     -- build_tool = "maven",
 
                     -- Classpath extra si necesitas jars adicionales
@@ -23,7 +24,7 @@ return {
 
                     -- Habilita el modo de test para proyectos Spring Boot
                     -- (ejecuta con el perfil de test activo)
-                    -- project_type = "spring",
+                    project_type = "spring",
                 }),
             },
 
