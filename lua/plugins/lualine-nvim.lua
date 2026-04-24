@@ -15,20 +15,21 @@ local function battery()
 
     local p = tonumber(percent)
     local icon
-    if p >= 90 then
-        icon = " "
-    elseif p >= 65 then
-        icon = " "
-    elseif p >= 40 then
-        icon = " "
-    elseif p >= 20 then
-        icon = " "
-    else
-        icon = " "
-    end
-    return icon .. percent .. "%"
-end
 
+    if p >= 90 then
+        icon = " "
+    elseif p >= 65 then
+        icon = " "
+    elseif p >= 40 then
+        icon = " "
+    elseif p >= 20 then
+        icon = " "
+    else
+        icon = " "
+    end
+
+    return icon .. percent .. "%%"
+end
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = {
@@ -43,7 +44,9 @@ return {
             always_divide_middle = true,
             always_show_tabline = true,
             globalstatus = false,
-            statusline = 1000,
+            refresh = {
+                statusline = 1000,
+            },
         },
         sections = {
             lualine_a = { 'mode' },
@@ -65,7 +68,7 @@ return {
                     }
                 }
             },
-            lualine_x = { battery, 'encoding', 'fileformat', 'filetype' },
+            lualine_x = { 'encoding', 'fileformat', 'filetype', },
             lualine_y = { 'progress' },
             lualine_z = {
                 'location',
@@ -73,7 +76,8 @@ return {
                     function()
                         return os.date("󱑎 %H:%M:%S")
                     end
-                }
+                },
+                battery,
             }
         }
     }
