@@ -364,7 +364,7 @@ end, { desc = "Test: Ver output" })
 vim.keymap.set("n", "<leader>jtn", function()
     local current_path = vim.fn.expand("%:p")
     local class_name = vim.fn.expand("%:t:r")
-local test_path = current_path:gsub("src/main/java", "src/test/java")
+    local test_path = current_path:gsub("src/main/java", "src/test/java")
     test_path = test_path:gsub("%.java$", "Test.java")
     vim.fn.mkdir(vim.fn.fnamemodify(test_path, ":h"), "p")
     vim.cmd("edit " .. test_path)
@@ -374,7 +374,7 @@ local test_path = current_path:gsub("src/main/java", "src/test/java")
         -- local package_line = vim.fn.getline(1)
         local package = ""
         for _, line in ipairs(vim.fn.readfile(current_path)) do
-        if line:match("^package ") then
+            if line:match("^package ") then
                 package = line
                 break
             end
@@ -402,7 +402,7 @@ local test_path = current_path:gsub("src/main/java", "src/test/java")
         }
         vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
     end
-end, {desc = "Agrega o busca la clase test"})
+end, { desc = "Agrega o busca la clase test" })
 
 -- Toggle panel de resumen visual
 keymap.set("n", "<leader>jtt", function()
@@ -422,3 +422,16 @@ end, { desc = "Test: Ir al fallo anterior" })
 keymap.set("n", "]t", function()
     require("neotest").jump.next({ status = "failed" })
 end, { desc = "Test: Ir al siguiente fallo" })
+
+
+-- =====================================================================
+-- TODO-COMMENTS
+-- =====================================================================
+
+vim.keymap.set("n", "]n", function()
+    require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+
+vim.keymap.set("n", "[n", function()
+    require("todo-comments").jump_prev()
+end, { desc = "Previous todo comment" })

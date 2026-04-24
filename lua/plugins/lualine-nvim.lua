@@ -1,3 +1,31 @@
+local function battery()
+    local handle = io.popen("acpi -b")
+    if not handle then return "" end
+
+    local output = handle:read("*a")
+    handle:close()
+
+    local percent = output:match("(%d+)%%")
+    if not percent then return "" end
+
+    local p = tonumber(percent)
+    local icon
+
+    if p >= 90 then
+        icon = " "
+    elseif p >= 65 then
+        icon = " "
+    elseif p >= 40 then
+        icon = " "
+    elseif p >= 20 then
+        icon = " "
+    else
+        icon = " "
+    end
+
+    return icon .. percent .. "%%"
+end
+
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = {
@@ -34,7 +62,7 @@ return {
                     }
                 }
             },
-            lualine_x = { 'encoding', 'fileformat', 'filetype' },
+            lualine_x = { battery, 'encoding', 'fileformat', 'filetype' },
             lualine_y = { 'progress' },
             lualine_z = {
                 'location',
