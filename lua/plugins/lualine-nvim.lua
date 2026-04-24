@@ -1,29 +1,32 @@
 local function battery()
-    local handle = io.popen("acpi -b")
-    if not handle then return "" end
+    -- Verificar que acpi existe
+    if vim.fn.executable("acpi") == 0 then return "" end
 
+    local handle = io.popen("acpi -b 2>/dev/null")
+    if not handle then return "" end
     local output = handle:read("*a")
     handle:close()
+
+    -- Si no hay batería o acpi no devuelve datos, no mostrar nada
+    if not output or output == "" then return "" end
 
     local percent = output:match("(%d+)%%")
     if not percent then return "" end
 
     local p = tonumber(percent)
     local icon
-
     if p >= 90 then
-        icon = " "
+        icon = " "
     elseif p >= 65 then
-        icon = " "
+        icon = " "
     elseif p >= 40 then
-        icon = " "
+        icon = " "
     elseif p >= 20 then
-        icon = " "
+        icon = " "
     else
-        icon = " "
+        icon = " "
     end
-
-    return icon .. percent .. "%%"
+    return icon .. percent .. "%"
 end
 
 return {
