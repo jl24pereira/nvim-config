@@ -11,7 +11,6 @@
 --   <leader>s  → Splits / Ventanas
 --   <leader>t  → Tabs
 --   <leader>q  → Quickfix
---   <leader>h  → Harpoon
 --   <leader>r  → Refactor (rename, etc.)
 --   <leader>c  → Diff / Merge
 --   <leader>l  → LSP extras (diagnósticos)
@@ -308,26 +307,6 @@ keymap.set("n", "<leader>ba", "<cmd>Telescope dap list_breakpoints<CR>",
     { desc = "Listar breakpoints (Telescope)" })
 
 -- =====================================================================
--- HARPOON  (<leader>h)
--- =====================================================================
-
-keymap.set("n", "<leader>ha", function() require("harpoon.mark").add_file() end,
-    { desc = "Agregar archivo a Harpoon" })
-
-keymap.set("n", "<leader>hh", function() require("harpoon.ui").toggle_quick_menu() end,
-    { desc = "Abrir menú Harpoon" })
-
-keymap.set("n", "<leader>h1", function() require("harpoon.ui").nav_file(1) end, { desc = "Archivo 1" })
-keymap.set("n", "<leader>h2", function() require("harpoon.ui").nav_file(2) end, { desc = "Archivo 2" })
-keymap.set("n", "<leader>h3", function() require("harpoon.ui").nav_file(3) end, { desc = "Archivo 3" })
-keymap.set("n", "<leader>h4", function() require("harpoon.ui").nav_file(4) end, { desc = "Archivo 4" })
-keymap.set("n", "<leader>h5", function() require("harpoon.ui").nav_file(5) end, { desc = "Archivo 5" })
-keymap.set("n", "<leader>h6", function() require("harpoon.ui").nav_file(6) end, { desc = "Archivo 6" })
-keymap.set("n", "<leader>h7", function() require("harpoon.ui").nav_file(7) end, { desc = "Archivo 7" })
-keymap.set("n", "<leader>h8", function() require("harpoon.ui").nav_file(8) end, { desc = "Archivo 8" })
-keymap.set("n", "<leader>h9", function() require("harpoon.ui").nav_file(9) end, { desc = "Archivo 9" })
-
--- =====================================================================
 -- NEOTEST — Agregar al final de keymaps.lua, dentro del grupo <leader>j
 -- =====================================================================
 
@@ -436,3 +415,7 @@ end, { desc = "Next todo comment" })
 vim.keymap.set("n", "[n", function()
     require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
+
+
+
+-- TODO: Hola este es un comentario

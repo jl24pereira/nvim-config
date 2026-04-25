@@ -53,8 +53,6 @@ return {
             { "<leader>t", group = "󰓩 Tabs" },
             -- Quickfix
             { "<leader>q", group = " Quickfix" },
-            -- Harpoon
-            { "<leader>h", group = "󱡀 Harpoon" },
             -- Git
             { "<leader>gh", group = "󰊢 Git Hunks" },
             { "<leader>gt", group = "󰊢 Git Toggle" },
@@ -64,6 +62,8 @@ return {
             -- Rename / Code actions (atajos rápidos sin prefijo largo)
             { "<leader>r", group = "󰑕 Refactor" },
             { "<leader>l", group = "󰒕 LSP Extra" },
+            { "<leader>i", group = "󰆉 Insertar" },
+            { "<leader>io", desc = " Insertar TODO comment" },
         },
 
     }
