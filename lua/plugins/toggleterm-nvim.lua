@@ -109,12 +109,23 @@ return {
         -- Gradle build
         keymap("n", "<leader>gB", function()
             Terminal:new({
-                cmd           = "./gradlew build",
+                cmd           = "./gradlew clean build",
                 direction     = "horizontal",
                 size          = 20,
                 close_on_exit = false,
             }):toggle()
-        end, vim.tbl_extend("force", opts, { desc = "Gradle: build" }))
+        end, vim.tbl_extend("force", opts, { desc = "Gradle: clean & build" }))
+
+        -- Gradle clean
+        keymap("n", "<leader>gC", function()
+            Terminal:new({
+                cmd           = "./gradlew clean",
+                direction     = "horizontal",
+                size          = 20,
+                close_on_exit = false,
+            }):toggle()
+        end, vim.tbl_extend("force", opts, { desc = "Gradle: clean" }))
+
 
         -- Salir del modo terminal con Esc (volver a modo normal)
         keymap("t", "<Esc>", "<C-\\><C-n>", vim.tbl_extend("force", opts, { desc = "Terminal: modo normal" }))

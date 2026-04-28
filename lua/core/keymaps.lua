@@ -50,6 +50,9 @@ keymap.set("v", "<A-d>", "y`>p", { desc = "Duplicar bloque abajo" })
 -- Abrir URL bajo el cursor
 keymap.set("n", "gx", ":!xdg-open <c-r><c-a><CR>", { desc = "Abrir URL bajo cursor" })
 
+-- Salto de linea
+keymap.set("n", "<leader>is", "i<CR><Esc>", { desc = "Salto de línea en cursor" })
+
 -- =====================================================================
 -- NAVEGACIÓN DE BUFFERS
 -- =====================================================================
