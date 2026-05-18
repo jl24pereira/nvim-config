@@ -60,14 +60,18 @@ return {
                 -- ['jdtls'] = function() end,
                 ['yamlls'] = function()
                     lspconfig['yamlls'].setup({
-                        capabilities = {
-                            textDocument = {
-                                foldingRange = {
-                                    dynamicRegistration = false,
-                                    lineFoldingOnly = true,
+                        on_attach = lsp_attach, -- ← agregar
+                        capabilities = vim.tbl_deep_extend("force",
+                            lsp_capabilities,   -- ← usar las capabilities de cmp_nvim_lsp
+                            {
+                                textDocument = {
+                                    foldingRange = {
+                                        dynamicRegistration = false,
+                                        lineFoldingOnly = true,
+                                    },
                                 },
-                            },
-                        },
+                            }
+                        ),
                         before_init = function(_, new_config)
                             new_config.settings.yaml.schemas = vim.tbl_deep_extend(
                                 "force",

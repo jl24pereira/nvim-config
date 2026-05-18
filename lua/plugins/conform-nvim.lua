@@ -8,6 +8,8 @@ return {
                 gradle = { "npm_groovy_lint" },
                 java = {},
                 markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
+                yaml = { "prettier" },
+                json = {},
             },
             formatters = {
                 npm_groovy_lint = {
