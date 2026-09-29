@@ -4,12 +4,12 @@ return {
     event = "VeryLazy",
     opts = {
         -- Modo de apertura por defecto
-        auto_close    = false,  -- No cerrar automáticamente cuando no hay problemas
-        auto_open     = false,  -- No abrir automáticamente al haber errores
-        auto_preview  = true,   -- Preview del archivo al navegar en el panel
-        auto_fold     = false,  -- No colapsar grupos automáticamente
-        auto_jump     = {},     -- No saltar automáticamente (control manual)
-        focus         = true,   -- Enfocar el panel al abrirlo
+        auto_close    = false, -- No cerrar automáticamente cuando no hay problemas
+        auto_open     = false, -- No abrir automáticamente al haber errores
+        auto_preview  = true,  -- Preview del archivo al navegar en el panel
+        auto_fold     = false, -- No colapsar grupos automáticamente
+        auto_jump     = {},    -- No saltar automáticamente (control manual)
+        focus         = true,  -- Enfocar el panel al abrirlo
 
         -- Íconos de tipo de diagnóstico
         icons         = {
@@ -74,21 +74,20 @@ return {
         },
         -- Location list en Trouble
         {
-            "<leader>ll",
+            "<leader>lL",
             "<cmd>Trouble loclist toggle<CR>",
             desc = "Trouble: Location list",
         },
         -- Navegar al siguiente diagnóstico (sin abrir el panel)
         {
-            "[x",
+            "]x",
             function()
                 require("trouble").next({ skip_groups = true, jump = true })
             end,
             desc = "Trouble: Siguiente problema",
         },
-        -- Navegar al diagnóstico anterior (sin abrir el panel)
         {
-            "]x",
+            "[x",
             function()
                 require("trouble").prev({ skip_groups = true, jump = true })
             end,

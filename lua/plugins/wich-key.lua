@@ -19,8 +19,6 @@ return {
         layout = {
             width = { min = 20 },
             spacing = 3,
-            { "<leader>gt", group = "󰊢 Git Toggle" },
-            spacing = 3,
         },
 
         icons = {
@@ -35,7 +33,9 @@ return {
             -- Archivos / Guardar
             { "<leader>w", group = "󰆓 Guardar / Salir" },
             -- Explorador
-            { "<leader>e", group = "󰙅 Explorador" },
+            { "<leader>e", desc = "󰙅 Explorador" },
+            -- Gradle
+            { "<leader>G", group = "Gradle" },
             -- Buscar (Telescope)
             { "<leader>f", group = " Buscar (Telescope)" },
             -- LSP / Navegación de código

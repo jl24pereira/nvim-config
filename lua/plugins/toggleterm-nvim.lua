@@ -97,17 +97,17 @@ return {
         end, vim.tbl_extend("force", opts, { desc = "Terminal: Toggle" }))
 
         -- Gradle bootRun
-        keymap("n", "<leader>gr", function()
+        keymap("n", "<leader>Gr", function()
             gradle_run:toggle()
         end, vim.tbl_extend("force", opts, { desc = "Gradle: bootRun" }))
 
         -- Gradle test
-        keymap("n", "<leader>gT", function()
+        keymap("n", "<leader>Gt", function()
             gradle_test:toggle()
         end, vim.tbl_extend("force", opts, { desc = "Gradle: test" }))
 
         -- Gradle build
-        keymap("n", "<leader>gB", function()
+        keymap("n", "<leader>Gb", function()
             Terminal:new({
                 cmd           = "./gradlew clean build",
                 direction     = "horizontal",
@@ -117,7 +117,7 @@ return {
         end, vim.tbl_extend("force", opts, { desc = "Gradle: clean & build" }))
 
         -- Gradle clean
-        keymap("n", "<leader>gC", function()
+        keymap("n", "<leader>Gc", function()
             Terminal:new({
                 cmd           = "./gradlew clean",
                 direction     = "horizontal",

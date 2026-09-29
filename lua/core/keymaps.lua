@@ -47,9 +47,6 @@ keymap.set("v", "<A-K>", ":m '<-2<CR>gv=gv", { desc = "Mover bloque arriba" })
 keymap.set("n", "<A-d>", "yyp", { desc = "Duplicar línea abajo" })
 keymap.set("v", "<A-d>", "y`>p", { desc = "Duplicar bloque abajo" })
 
--- Abrir URL bajo el cursor
-keymap.set("n", "gx", ":!xdg-open <c-r><c-a><CR>", { desc = "Abrir URL bajo cursor" })
-
 -- Salto de linea
 keymap.set("n", "<leader>is", "i<CR><Esc>", { desc = "Salto de línea en cursor" })
 
@@ -180,7 +177,7 @@ keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP: Documentación hover" })
 keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Ir a definición" })
 keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, { desc = "Ir a declaración" })
 keymap.set("n", "<leader>gi", vim.lsp.buf.implementation, { desc = "Ir a implementación" })
-keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition, { desc = "Ir a tipo" })
+keymap.set("n", "<leader>gy", vim.lsp.buf.type_definition, { desc = "Ir a tipo" })
 keymap.set("n", "<leader>gg", vim.lsp.buf.hover, { desc = "Info hover" })
 keymap.set("n", "<leader>gs", vim.lsp.buf.signature_help, { desc = "Ayuda de firma" })
 
@@ -213,9 +210,10 @@ keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Renombrar símbolo" 
 -- =====================================================================
 
 keymap.set("n", "<leader>ll", vim.diagnostic.open_float, { desc = "Ver diagnóstico flotante" })
-keymap.set("n", "<leader>ln", vim.diagnostic.goto_next, { desc = "Siguiente error" })
-keymap.set("n", "<leader>lp", vim.diagnostic.goto_prev, { desc = "Error anterior" })
-keymap.set("n", "<leader>ls", vim.lsp.buf.document_symbol, { desc = "Símbolos del documento" })
+keymap.set("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end,
+    { desc = "Siguiente error" })
+keymap.set("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end,
+    { desc = "Error anterior" })
 
 -- =====================================================================
 -- JAVA  (<leader>j)
