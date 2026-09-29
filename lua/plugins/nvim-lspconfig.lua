@@ -80,7 +80,7 @@ return {
         -- ─────────────────────────────────────────────────────────────
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "bashls", "cssls", "html", "gradle_ls", "groovyls", "lua_ls",
+                "bashls", "cssls", "html", "groovyls", "lua_ls",
                 "jsonls", "lemminx", "marksman", "quick_lint_js",
                 "yamlls", "dockerls",
             },
