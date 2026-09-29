@@ -2,8 +2,6 @@
 -- GESTOR DE PLUGINS (Bootstrapping lazy.nvim)
 -- =====================================================================
 --
--- DEBE estar antes de lazy.nvim
-vim.lsp.config('jdtls', { enabled = false })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

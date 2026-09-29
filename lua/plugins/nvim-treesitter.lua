@@ -1,27 +1,24 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false, -- esta versión no permite cargarlo después
     build = ":TSUpdate",
-    event = 'VeryLazy',
     config = function()
-        vim.env.CC = "clang"
-        require("nvim-treesitter.install").compilers = { "clang" }
-
-        local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-        if not status_ok then return end
-
-        configs.setup({
-            ensure_installed = {
-                "c", "lua", "java", "markdown", "json5", "dockerfile",
-                "groovy",     -- Gradle scripts
-                "yaml",       -- application.yml, docker-compose
-                "xml",        -- pom.xml, beans, persistence
-                "properties", -- application.properties
-                "bash",       -- scripts de build/deploy
-                "toml",       -- configs modernas
-            },
-            highlight = { enable = true },
-            indent = { enable = true },
-            auto_install = true
+        -- Analizadores que queremos instalados
+        require("nvim-treesitter").install({
+            "java", "lua", "vim", "vimdoc", "query",
+            "markdown", "markdown_inline",
+            "groovy", "yaml", "xml", "properties",
+            "json", "json5", "dockerfile", "bash", "toml", "c",
         })
-    end
+
+        -- En esta versión hay que encender los colores e indentación en cada archivo
+        vim.api.nvim_create_autocmd("FileType", {
+            callback = function(args)
+                if pcall(vim.treesitter.start, args.buf) then
+                    vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end
+            end,
+        })
+    end,
 }

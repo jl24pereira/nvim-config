@@ -1,185 +1,118 @@
--- LSP Support
 return {
-    -- LSP Configuration
-    -- https://github.com/neovim/nvim-lspconfig
-    'neovim/nvim-lspconfig',
-    event = 'VeryLazy',
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        -- LSP Management
-        -- https://github.com/williamboman/mason.nvim
-        { 'williamboman/mason.nvim' },
-        -- https://github.com/williamboman/mason-lspconfig.nvim
-        { 'williamboman/mason-lspconfig.nvim' },
-
-        -- Auto-Install LSPs, linters, formatters, debuggers
-        -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
-        { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
-
-        -- Useful status updates for LSP
-        -- https://github.com/j-hui/fidget.nvim
-        { 'j-hui/fidget.nvim',                        opts = {} },
-
-        -- Additional lua configuration, makes nvim stuff amazing!
-        -- https://github.com/folke/neodev.nvim
-        { 'folke/neodev.nvim',                        opts = {} }
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        "b0o/SchemaStore.nvim",
+        { "j-hui/fidget.nvim",  opts = {} },
+        { "folke/lazydev.nvim", ft = "lua", opts = {} }, -- reemplaza a neodev (deprecado)
     },
     config = function()
-        local lspconfig = require('lspconfig')
-        local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-        local lsp_attach = function(client, bufnr)
-            -- Create your keybindings here...
-            local status_ok, navic = pcall(require, "nvim-navic")
-            if status_ok then
-                -- Solo adjuntar navic si el servidor soporta símbolos de documento
-                -- Y evitamos que se adjunte a gradle_ls si groovyls ya está ahí
-                if client.server_capabilities.documentSymbolProvider then
-                    navic.attach(client, bufnr)
+        -- ─────────────────────────────────────────────────────────────
+        -- 1. CONFIGURACIÓN COMÚN PARA TODOS LOS SERVIDORES
+        -- ─────────────────────────────────────────────────────────────
+        vim.lsp.config("*", {
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        })
+
+        -- Breadcrumbs (barbecue/navic) para cualquier servidor, incluido jdtls
+        vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(args)
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
+                local ok, navic = pcall(require, "nvim-navic")
+                if ok and client
+                    and client.server_capabilities.documentSymbolProvider
+                    and not vim.b[args.buf].navic_client_id then
+                    navic.attach(client, args.buf)
                 end
-            end
-        end
-
-        require('mason').setup()
-        require('mason-lspconfig').setup({
-            ensure_installed = {
-                'bashls', 'cssls', 'html', 'gradle_ls', 'groovyls', 'lua_ls',
-                'jsonls', 'lemminx', 'marksman', 'quick_lint_js',
-                'yamlls', 'dockerls'
-            },
-            automatic_instalation = {
-                exclude = { "jdtls" }
-            },
-            handlers = {
-                -- Default handler for all servers not listed below
-                function(server_name)
-                    lspconfig[server_name].setup({
-                        on_attach = lsp_attach,
-                        capabilities = lsp_capabilities
-                    })
-                end,
-                -- jdtls is handled exclusively by ftplugin/java.lua
-                -- ['jdtls'] = function() end,
-                ['yamlls'] = function()
-                    lspconfig['yamlls'].setup({
-                        on_attach = lsp_attach, -- ← agregar
-                        capabilities = vim.tbl_deep_extend("force",
-                            lsp_capabilities,   -- ← usar las capabilities de cmp_nvim_lsp
-                            {
-                                textDocument = {
-                                    foldingRange = {
-                                        dynamicRegistration = false,
-                                        lineFoldingOnly = true,
-                                    },
-                                },
-                            }
-                        ),
-                        before_init = function(_, new_config)
-                            new_config.settings.yaml.schemas = vim.tbl_deep_extend(
-                                "force",
-                                new_config.settings.yaml.schemas or {},
-                                require("schemastore").yaml.schemas()
-                            )
-                        end,
-                        settings = {
-                            redhat = { telemetry = { enabled = false } },
-                            yaml = {
-                                keyOrdering = false,
-                                format = { enable = true },
-                                validate = true,
-                                schemaStore = {
-                                    enable = false,
-                                    url = "",
-                                },
-                            },
-                        },
-                    })
-                end,
-                ['jsonls'] = function()
-                    lspconfig['jsonls'].setup({
-                        before_init = function(_, new_config)
-                            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-                            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
-                        end,
-                        settings = {
-                            json = {
-                                format = { enable = true },
-                                validate = { enable = true },
-                            },
-                        },
-                    })
-                end,
-                ['marksman'] = function()
-                    lspconfig['marksman'].setup({})
-                end,
-                ['dockerls'] = function()
-                    lspconfig['dockerls'].setup({
-                        on_attach = lsp_attach,
-                        capabilities = lsp_capabilities,
-                        settings = {
-                            docker = {
-                                languageserver = {
-                                    formatter = {
-                                        ignoreMultilineInstructions = true,
-                                    },
-                                },
-                            }
-                        }
-                    })
-                end,
-            }
+            end,
         })
 
-        require('mason-tool-installer').setup({
-
-            ensure_installed = {
-                -- Java
-                'jdtls',
-                'java-debug-adapter',
-                'java-test',
-                'google-java-format',
-                'vscode-spring-boot-tools',
-                -- LSPs
-                'bashls',
-                'cssls',
-                'html',
-                'gradle_ls',
-                'groovyls',
-                'lua_ls',
-                'jsonls',
-                'lemminx',
-                'marksman',
-                'quick_lint_js',
-                'yamlls',
-                -- Extras
-                'hadolint',
-                'markdownlint-cli2',
-                'markdown-toc',
-                'npm-groovy-lint',
-                'docker-language-server',
-            }
-
+        -- ─────────────────────────────────────────────────────────────
+        -- 2. AJUSTES POR SERVIDOR
+        -- ─────────────────────────────────────────────────────────────
+        vim.lsp.config("lua_ls", {
+            settings = { Lua = { diagnostics = { globals = { "vim" } } } },
         })
-        -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
-        -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
-        vim.api.nvim_command('MasonToolsInstall')
 
-        -- Lua LSP settings
-        vim.lsp.config('lua_ls', {
+        vim.lsp.config("yamlls", {
+            capabilities = {
+                textDocument = {
+                    foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
+                },
+            },
             settings = {
-                ['lua_ls'] = {
-                    diagnostics = {
-                        -- Get the language server to recognize the `vim` global
-                        globals = { 'vim' }
-                    }
-                }
-            }
+                redhat = { telemetry = { enabled = false } },
+                yaml = {
+                    keyOrdering = false,
+                    format = { enable = true },
+                    validate = true,
+                    schemaStore = { enable = false, url = "" },
+                    schemas = require("schemastore").yaml.schemas(),
+                },
+            },
         })
 
-        -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
+        vim.lsp.config("jsonls", {
+            settings = {
+                json = {
+                    schemas = require("schemastore").json.schemas(),
+                    format = { enable = true },
+                    validate = { enable = true },
+                },
+            },
+        })
+
+        vim.lsp.config("dockerls", {
+            settings = {
+                docker = {
+                    languageserver = {
+                        formatter = { ignoreMultilineInstructions = true },
+                    },
+                },
+            },
+        })
+
+        -- ─────────────────────────────────────────────────────────────
+        -- 3. INSTALAR Y ACTIVAR SERVIDORES
+        -- ─────────────────────────────────────────────────────────────
+        require("mason-lspconfig").setup({
+            ensure_installed = {
+                "bashls", "cssls", "html", "gradle_ls", "groovyls", "lua_ls",
+                "jsonls", "lemminx", "marksman", "quick_lint_js",
+                "yamlls", "dockerls",
+            },
+            -- jdtls lo arranca ftplugin/java.lua, así que Mason NO debe activarlo
+            automatic_enable = { exclude = { "jdtls" } },
+        })
+
+        -- Herramientas que no son servidores LSP de mason-lspconfig
+        require("mason-tool-installer").setup({
+            ensure_installed = {
+                "tree-sitter-cli",
+                -- Java (los usa ftplugin/java.lua)
+                "jdtls",
+                "java-debug-adapter",
+                "java-test",
+                "google-java-format",
+                "vscode-spring-boot-tools",
+                -- Linters y formateadores
+                "hadolint",
+                "markdownlint-cli2",
+                "markdown-toc",
+                "npm-groovy-lint",
+                "prettier",
+            },
+        })
+
+        -- Bordes redondeados en las ventanas flotantes del LSP
         local open_floating_preview = vim.lsp.util.open_floating_preview
         function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
             opts = opts or {}
-            opts.border = opts.border or "rounded" -- Set border to rounded
+            opts.border = opts.border or "rounded"
             return open_floating_preview(contents, syntax, opts, ...)
         end
-    end
+    end,
 }
