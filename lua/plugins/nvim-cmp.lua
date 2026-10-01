@@ -13,7 +13,7 @@ return {
         local lspkind = require('lspkind')
 
         require("luasnip.loaders.from_lua").lazy_load({
-            paths = { "~/.config/nvim/lua/plugins/snippets/" }
+            paths = { vim.fn.stdpath("config") .. "/lua/plugins/snippets" }
         })
 
         require("luasnip.loaders.from_vscode").lazy_load()
@@ -71,9 +71,9 @@ return {
             -- Agrupamos sources para que aparezcan simultáneamente
             sources = cmp.config.sources({
                 { name = "nvim_lsp" }, -- lsp
-                { name = "luasnip" }, -- snippets
-                { name = "buffer" }, -- text within current buffer
-                { name = "path" }    -- file system paths
+                { name = "luasnip" },  -- snippets
+                { name = "buffer" },   -- text within current buffer
+                { name = "path" }      -- file system paths
             }),
             formatting = {
                 format = lspkind.cmp_format({

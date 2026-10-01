@@ -4,7 +4,6 @@ return {
     dependencies = {
         "nvim-neotest/nvim-nio",
         "nvim-lua/plenary.nvim",
-        "antoinemadec/FixCursorHold.nvim",
         "nvim-treesitter/nvim-treesitter",
         -- Adaptador para Java (JUnit 4/5, Maven y Gradle)
         "rcasia/neotest-java",

@@ -12,7 +12,7 @@ return {
                 shortcut = {
                     { desc = '󰊳 Update', group = '@property', action = 'Lazy update', key = 'u' },
                     {
-                        icon = ' ',
+                        icon = ' ',
                         icon_hl = '@variable',
                         desc = 'Files',
                         group = 'Label',
@@ -20,16 +20,18 @@ return {
                         key = 'f',
                     },
                     {
-                        desc = ' Apps',
+                        desc = ' Proyectos',
                         group = 'DiagnosticHint',
-                        action = 'Telescope app',
-                        key = 'a',
+                        action = 'Telescope projects',
+                        key = 'p',
                     },
                     {
-                        desc = ' dotfiles',
+                        desc = ' Config nvim',
                         group = 'Number',
-                        action = 'Telescope dotfiles',
-                        key = 'd',
+                        action = function()
+                            require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
+                        end,
+                        key = 'c',
                     },
                 },
             },
