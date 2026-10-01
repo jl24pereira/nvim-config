@@ -1,10 +1,14 @@
 return {
     "nvimtools/none-ls.nvim",
-    optional = true,
-    opts = function(_, opts)
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
         local nls = require("null-ls")
-        opts.sources = vim.list_extend(opts.sources or {}, {
-            nls.builtins.diagnostics.markdownlint_cli2,
+        nls.setup({
+            sources = {
+                nls.builtins.diagnostics.markdownlint_cli2, -- Markdown
+                nls.builtins.diagnostics.hadolint,          -- Dockerfile
+            },
         })
     end,
 }
