@@ -43,6 +43,10 @@ for _, jar in ipairs(vim.split(vim.fn.glob(mason .. "/share/java-test/*.jar"), "
     end
 end
 
+
+-- 3. Spring Boot (extensiones de jdtls que provee spring-boot.nvim)
+vim.list_extend(bundles, require("spring_boot").java_extensions())
+
 -- ─────────────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN JDTLS
 -- ─────────────────────────────────────────────────────────────────────
