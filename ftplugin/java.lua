@@ -51,10 +51,12 @@ vim.list_extend(bundles, require("spring_boot").java_extensions())
 -- CONFIGURACIÓN JDTLS
 -- ─────────────────────────────────────────────────────────────────────
 local java_home = home .. "/.sdkman/candidates/java/current"
+local jdtls_java = vim.fn.glob(home .. "/.sdkman/candidates/java/25*/bin/java", false, true)[1]
+    or (java_home .. "/bin/java")
 
 local config = {
     cmd          = {
-        "java",
+        jdtls_java,
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
         "-Dosgi.bundles.defaultStartLevel=4",
         "-Declipse.product=org.eclipse.jdt.ls.core.product",

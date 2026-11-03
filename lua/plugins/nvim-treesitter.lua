@@ -4,6 +4,10 @@ return {
     lazy = false, -- esta versión no permite cargarlo después
     build = ":TSUpdate",
     config = function()
+        local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+        if not vim.env.PATH:find(mason_bin, 1, true) then
+            vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+        end
         -- Analizadores que queremos instalados
         require("nvim-treesitter").install({
             "java", "lua", "vim", "vimdoc", "query",
